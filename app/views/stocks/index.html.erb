@@ -13,6 +13,7 @@
   <tbody>
     <% @stocks.each do |stock| %>
       <tr>
+        
         <td><%= stock.body %></td>
         <td><%= link_to 'Show', stock %></td>
         <td><%= link_to 'Edit', edit_stock_path(stock) %></td>
