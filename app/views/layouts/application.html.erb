@@ -18,6 +18,7 @@
        <%= link_to "Admin: Sign Up", new_admin_registration_path %>
        <%= link_to "User: Sign In", new_user_session_path %>
        <%= link_to "Admin: Sign In", new_user_session_path %>
+       <%= link_to "sign out", destroy_user_session_path, method: :delete %>
     <%= yield %>
   </body>
 </html>

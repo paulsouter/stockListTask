@@ -13,7 +13,12 @@
   <tbody>
     <% @stocks.each do |stock| %>
       <tr>
-        
+        <% if admin_signed_in? %>
+
+        <% end %>
+        <% if stock.user == current_user %>
+
+        <% end%>
         <td><%= stock.body %></td>
         <td><%= link_to 'Show', stock %></td>
         <td><%= link_to 'Edit', edit_stock_path(stock) %></td>

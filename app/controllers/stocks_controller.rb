@@ -1,6 +1,10 @@
-class StocksController < ApplicationController
+class StocksController < ApplicationController 
   before_action :set_stock, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  require 'rest-client'
+
+
+
 
   # GET /stocks
   # GET /stocks.json
@@ -27,6 +31,9 @@ class StocksController < ApplicationController
   def create
     @stock = current_user.stocks.build(stock_params)
 
+    response = RestClient.get("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=RFNPV1XM40OW0GDR")
+
+    @stock.body = response
     respond_to do |format|
       if @stock.save
         format.html { redirect_to @stock, notice: 'Stock was successfully created.' }
