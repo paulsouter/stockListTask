@@ -13,8 +13,10 @@
 
       <p class="notice"><%= notice %></p>
        <p class="alert"><%= alert %></p>
-
+        <% if admin_signed_in? %>
        <%= link_to "User: Sign Up", new_user_registration_path %>
+       <%= link_to "Admin: Sign Up", new_admin_registration_path %>
+        <% end %>
        <%= link_to "Admin: Sign Up", new_admin_registration_path %>
        <%= link_to "User: Sign In", new_user_session_path %>
        <%= link_to "Admin: Sign In", new_user_session_path %>

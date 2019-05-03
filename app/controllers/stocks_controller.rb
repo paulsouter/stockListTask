@@ -1,6 +1,12 @@
 class StocksController < ApplicationController 
   before_action :set_stock, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+#       before_action do
+# if current_admin != nil
+#  authenticate_admin!        
+# else
+#  authenticate_user!
+# end
+# end
   require 'rest-client'
 
 
@@ -10,6 +16,8 @@ class StocksController < ApplicationController
   # GET /stocks.json
   def index
     @stocks = Stock.all
+
+    StockUpdateJob.set(wait: 1.day).perform_later()
   end
 
   # GET /stocks/1
@@ -31,9 +39,6 @@ class StocksController < ApplicationController
   def create
     @stock = current_user.stocks.build(stock_params)
 
-    response = RestClient.get("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=RFNPV1XM40OW0GDR")
-
-    @stock.body = response
     respond_to do |format|
       if @stock.save
         format.html { redirect_to @stock, notice: 'Stock was successfully created.' }
@@ -50,6 +55,22 @@ class StocksController < ApplicationController
   def update
     respond_to do |format|
       if @stock.update(stock_params)
+        format.html { redirect_to @stock, notice: 'Stock was successfully updated.' }
+        format.json { render :show, status: :ok, location: @stock }
+      else
+        format.html { render :edit }
+        format.json { render json: @stock.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+    def antoupdate
+
+          response = RestClient.get("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=RFNPV1XM40OW0GDR")
+
+    # @stock.body = response
+    respond_to do |format|
+      if @stock.update(response)
         format.html { redirect_to @stock, notice: 'Stock was successfully updated.' }
         format.json { render :show, status: :ok, location: @stock }
       else
