@@ -1,12 +1,6 @@
 class StocksController < ApplicationController 
   before_action :set_stock, only: [:show, :edit, :update, :destroy]
-#       before_action do
-# if current_admin != nil
-#  authenticate_admin!        
-# else
-#  authenticate_user!
-# end
-# end
+
   require 'rest-client'
 
 
@@ -23,6 +17,7 @@ class StocksController < ApplicationController
   # GET /stocks/1
   # GET /stocks/1.json
   def show
+  
   end
 
   # GET /stocks/new
@@ -68,7 +63,7 @@ class StocksController < ApplicationController
 
           response = RestClient.get("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=RFNPV1XM40OW0GDR")
 
-    # @stock.body = response
+
     respond_to do |format|
       if @stock.update(response)
         format.html { redirect_to @stock, notice: 'Stock was successfully updated.' }
